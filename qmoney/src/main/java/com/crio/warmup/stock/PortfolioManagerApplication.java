@@ -1,31 +1,49 @@
 
 package com.crio.warmup.stock;
 
-
-//import com.crio.warmup.stock.dto.AnnualizedReturn;
+//import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.PortfolioTrade;
+import com.crio.warmup.stock.dto.TiingoCandle;
+//import com.crio.warmup.stock.dto.AnnualizedReturn
+//import com.crio.warmup.stock.dto.AnnualizedReturn;
+//import com.crio.warmup.stock.dto.PortfolioTrade;
+//import com.crio.warmup.stock.dto.TotalReturnsDto;
 import com.crio.warmup.stock.log.UncaughtExceptionHandler;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
+//import java.net.URI;
 import java.net.URISyntaxException;
+//import java.net.URLEncoder;
 //import java.nio.file.Files;
 import java.nio.file.Paths;
 //import java.time.LocalDate;
 //import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 //import java.util.Collections;
 //import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 //import java.util.logging.Level;
 import java.util.logging.Logger;
 //import java.util.stream.Collectors;
 //import java.util.stream.Stream;
 import org.apache.logging.log4j.ThreadContext;
+import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpEntity;
+//import org.springframework.http.HttpHeaders;
+//import org.springframework.http.HttpMethod;
+//import org.springframework.http.MediaType;
 //import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestTemplate;
 
 
 public class PortfolioManagerApplication {
@@ -66,12 +84,8 @@ public class PortfolioManagerApplication {
 
 
 
-  // Note:
-  // 1. You may have to register on Tiingo to get the api_token.
-  // 2. Look at args parameter and the module instructions carefully.
-  // 2. You can copy relevant code from #mainReadFile to parse the Json.
-  // 3. Use RestTemplate#getForObject in order to call the API,
-  //    and deserialize the results in List<Candle>
+
+
 
 
 
@@ -136,18 +150,85 @@ public class PortfolioManagerApplication {
         lineNumberFromTestFileInStackTrace});
   }
 
+  @Autowired
+  static RestTemplate restTemplate;
 
   // Note:
-  // Remember to confirm that you are getting same results for annualized returns as in Module 3.
+  // Remember to confirm that you are getting same results for annualized returns
+  // as in Module 3.
+
+  // TODO: CRIO_TASK_MODULE_REST_API
+  //  Find out the closing price of each stock on the end_date and return the list
+  //  of all symbols in ascending order by its close value on end date.
+
+  // Note:
+  // 1. You may have to register on Tiingo to get the api_token.
+  // 2. Look at args parameter and the module instructions carefully.
+  // 2. You can copy relevant code from #mainReadFile to parse the Json.
+  // 3. Use RestTemplate#getForObject in order to call the API,
+  //    and deserialize the results in List<Candle>
 
 
+  public static List<String> mainReadQuotes(String[] args) throws IOException, URISyntaxException {
+
+    Object objectMapper = getObjectMapper();
+    
+    PortfolioTrade[] ob = 
+    ((ObjectMapper)objectMapper).readValue(resolveFileFromResources(args[0]),
+    PortfolioTrade[].class);
+    List<String> symbols = new ArrayList<>();
+    List<String> startDate = new ArrayList<>();
+    for (PortfolioTrade pf:ob) {
+      symbols.add(pf.getSymbol());
+      startDate.add((pf.getPurchaseDate()).toString());
+    }
+
+    HashMap<String, Double> mapclosing = new HashMap<String, Double>();
+    List<String> finalresult = new ArrayList<String>();
+
+    RestTemplate restTemplate = new RestTemplate();
+    Object objectmapper = getObjectMapper();
+    
+    for (int i = 0;i < symbols.size();i++) {
+      List<TiingoCandle> candlelist = new ArrayList<TiingoCandle>();
+      String str = restTemplate.getForObject("https://api.tiingo.com/tiingo/daily/{symbol}/prices?startDate={startDate}&endDate={endDate}&token=d431f671467bfe6b952b908e6eea0397bfa1f560",
+              String.class, symbols.get(i), startDate.get(i), args[1]);
+      
+      candlelist = ((ObjectMapper) objectmapper).readValue(str,
+       new TypeReference<List<TiingoCandle>>(){});
+      mapclosing.put(symbols.get(i), candlelist.get(candlelist.size() - 1).getClose());
+
+
+      //System.out.println(candlelist.get(candlelist.size()-1).getClose());
+    }
+
+    List<Map.Entry<String, Double>> list = new 
+          LinkedList<Map.Entry<String, Double>>(mapclosing.entrySet());
+    
+    Collections.sort(list, new Comparator<Map.Entry<String, Double>>() { 
+      public int compare(Map.Entry<String, Double> o1,  
+                         Map.Entry<String, Double> o2) { 
+          return (o1.getValue()).compareTo(o2.getValue()); 
+        } 
+    });
+
+    for (Map.Entry<String, Double> a : list) {
+      finalresult.add(a.getKey());
+    }
+
+    //System.out.println(str);
+    return finalresult;
+    //return Collections.emptyList();
+  }
 
   public static void main(String[] args) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
     ThreadContext.put("runId", UUID.randomUUID().toString());
 
-    printJsonObject(mainReadFile(args));
+    //printJsonObject(mainReadFile(args));
 
+
+    printJsonObject(mainReadQuotes(args));
 
 
   }
