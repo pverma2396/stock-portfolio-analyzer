@@ -148,16 +148,18 @@ public class PortfolioManagerImpl implements PortfolioManager {
 
 
   protected String buildUri(String symbol, LocalDate startDate, LocalDate endDate) {
-    // String uriTemplate = "https:api.tiingo.com/tiingo/daily/" + symbol + "/prices?" + "startDate=" 
+    // String uriTemplate = "https:api.tiingo.com/tiingo/daily/" 
+    //        + symbol + "/prices?" + "startDate=" 
     //       + startDate.toString() + "&endDate=" + endDate.toString() + "&token=$APIKEY";
     // uriTemplate.replace("$APIKEY","d431f671467bfe6b952b908e6eea0397bfa1f560");
-    // String uriTemplate = "https://api.tiingo.com/tiingo/daily/$SYMBOL/prices?startDate=$STARTDATE&endDate=$ENDDATE&token=$APIKEY";
     
     // uriTemplate.replace("$SYMBOL",symbol);
     // uriTemplate.replace("$STARTDATE",startDate.toString());
     // uriTemplate.replace("$ENDDATE",endDate.toString());
     // uriTemplate.replace("$APIKEY","d431f671467bfe6b952b908e6eea0397bfa1f560");
-    String uriTemplate = "https://api.tiingo.com/tiingo/daily/"+ symbol +"/prices?startDate="+ startDate.toString() + "&endDate="+ endDate.toString() + "&token="+"d431f671467bfe6b952b908e6eea0397bfa1f560";
+    String uriTemplate = "https://api.tiingo.com/tiingo/daily/" + symbol + "/prices?startDate=" 
+              + startDate.toString() + "&endDate=" + endDate.toString() 
+              + "&token=" + "d431f671467bfe6b952b908e6eea0397bfa1f560";
     return uriTemplate;
   }
 
