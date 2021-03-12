@@ -9,6 +9,7 @@ import com.crio.warmup.stock.portfolio.PortfolioManager;
 import com.crio.warmup.stock.portfolio.PortfolioManagerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+// import com.crio.warmup.stock.dto.TotalReturnsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
@@ -29,6 +30,10 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
+// import java.nio.file.Files;
+// import java.util.logging.Level;
+// import java.util.stream.Collectors;
+// import java.util.stream.Stream;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -333,7 +338,6 @@ public class PortfolioManagerApplication {
     return portfolioManager.calculateAnnualizedReturn(Arrays.asList(portfolioTrades), endDate);
   }
 
-
   public static void main(String[] args) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
     ThreadContext.put("runId", UUID.randomUUID().toString());
@@ -345,6 +349,7 @@ public class PortfolioManagerApplication {
     //printJsonObject(mainCalculateSingleReturn(args));
 
     printJsonObject(mainCalculateReturnsAfterRefactor(args));
+
   }
 }
 

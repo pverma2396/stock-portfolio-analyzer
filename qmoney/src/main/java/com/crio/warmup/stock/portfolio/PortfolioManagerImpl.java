@@ -1,17 +1,16 @@
 
 package com.crio.warmup.stock.portfolio;
 
-//import static java.time.temporal.ChronoUnit.DAYS;
-//import static java.time.temporal.ChronoUnit.SECONDS;
+// import static java.time.temporal.ChronoUnit.DAYS;
+// import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.PortfolioTrade;
 import com.crio.warmup.stock.dto.TiingoCandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,12 +18,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-//import java.util.concurrent.ExecutionException;
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//import java.util.concurrent.Future;
-//import java.util.concurrent.TimeUnit;
-//import java.util.stream.Collectors;
+// import java.util.concurrent.ExecutionException;
+// import java.util.concurrent.ExecutorService;
+// import java.util.concurrent.Executors;
+// import java.util.concurrent.Future;
+// import java.util.concurrent.TimeUnit;
+// import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerImpl implements PortfolioManager {
@@ -36,6 +35,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
 
   // Caution: Do not delete or modify the constructor, or else your build will
   // break!
+  // Caution: Do not delete or modify the constructor, or else your build will break!
   // This is absolutely necessary for backward compatibility
   protected PortfolioManagerImpl(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -111,6 +111,8 @@ public class PortfolioManagerImpl implements PortfolioManager {
   }
 
 
+
+
   private Comparator<AnnualizedReturn> getComparator() {
     return Comparator.comparing(AnnualizedReturn::getAnnualizedReturn).reversed();
   }
@@ -129,26 +131,36 @@ public class PortfolioManagerImpl implements PortfolioManager {
       throw new RuntimeException();
     }
 
-    String uri = buildUri(symbol, from, to).replace("$APIKEY",
-          "d431f671467bfe6b952b908e6eea0397bfa1f560");
+    String uri = buildUri(symbol, from, to);
 
     TiingoCandle[] candleList = restTemplate.getForObject(uri, TiingoCandle[].class);
 
     if (candleList == null) {
       return new ArrayList<Candle>();
-    } else {
-      List<Candle> stockList = Arrays.asList(candleList);
-      return stockList;
     }
-
+    List<Candle> stockList = Arrays.asList(candleList);
     //return stockList;
+    
+
+    return stockList;
     //return Collections.emptyList();
   }
 
 
   protected String buildUri(String symbol, LocalDate startDate, LocalDate endDate) {
-    String uriTemplate = "https:api.tiingo.com/tiingo/daily/" + symbol + "/prices?" + "startDate=" 
-          + startDate.toString() + "&endDate=" + endDate.toString() + "&token=$APIKEY";
+    // String uriTemplate = "https:api.tiingo.com/tiingo/daily/" + symbol + "/prices?" + "startDate=" 
+    //       + startDate.toString() + "&endDate=" + endDate.toString() + "&token=$APIKEY";
+    // uriTemplate.replace("$APIKEY","d431f671467bfe6b952b908e6eea0397bfa1f560");
+    // String uriTemplate = "https://api.tiingo.com/tiingo/daily/$SYMBOL/prices?startDate=$STARTDATE&endDate=$ENDDATE&token=$APIKEY";
+    
+    // uriTemplate.replace("$SYMBOL",symbol);
+    // uriTemplate.replace("$STARTDATE",startDate.toString());
+    // uriTemplate.replace("$ENDDATE",endDate.toString());
+    // uriTemplate.replace("$APIKEY","d431f671467bfe6b952b908e6eea0397bfa1f560");
+    String uriTemplate = "https://api.tiingo.com/tiingo/daily/"+ symbol +"/prices?startDate="+ startDate.toString() + "&endDate="+ endDate.toString() + "&token="+"d431f671467bfe6b952b908e6eea0397bfa1f560";
     return uriTemplate;
   }
+
+
+
 }
