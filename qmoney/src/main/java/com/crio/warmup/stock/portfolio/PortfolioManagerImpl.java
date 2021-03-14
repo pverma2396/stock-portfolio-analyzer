@@ -11,6 +11,9 @@ import com.crio.warmup.stock.dto.TiingoCandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 // import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.crio.warmup.stock.quotes.StockQuotesService;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ import org.springframework.web.client.RestTemplate;
 public class PortfolioManagerImpl implements PortfolioManager {
 
 
-
+  private StockQuotesService stockQuotesService;
 
   private RestTemplate restTemplate;
 
@@ -37,8 +40,14 @@ public class PortfolioManagerImpl implements PortfolioManager {
   // break!
   // Caution: Do not delete or modify the constructor, or else your build will break!
   // This is absolutely necessary for backward compatibility
+
+  @Deprecated
   protected PortfolioManagerImpl(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
+  }
+
+  protected PortfolioManagerImpl(StockQuotesService stockQuotesService){
+    this.stockQuotesService = stockQuotesService;
   }
 
 
@@ -110,9 +119,6 @@ public class PortfolioManagerImpl implements PortfolioManager {
 
   }
 
-
-
-
   private Comparator<AnnualizedReturn> getComparator() {
     return Comparator.comparing(AnnualizedReturn::getAnnualizedReturn).reversed();
   }
@@ -164,5 +170,12 @@ public class PortfolioManagerImpl implements PortfolioManager {
   }
 
 
+
+
+  // ¶TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
+  //  Modify the function #getStockQuote and start delegating to calls to
+  //  stockQuoteService provided via newly added constructor of the class.
+  //  You also have a liberty to completely get rid of that function itself, however, make sure
+  //  that you do not delete the #getStockQuote function.
 
 }
