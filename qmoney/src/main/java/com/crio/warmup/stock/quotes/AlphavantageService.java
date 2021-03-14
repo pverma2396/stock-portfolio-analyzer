@@ -65,7 +65,7 @@ public class AlphavantageService implements StockQuotesService {
 
     String str = restTemplate.getForObject(uri, String.class);
 
-    if(str ==null){
+    if (str == null) {
       return new ArrayList<Candle>();
     }
 
@@ -78,7 +78,7 @@ public class AlphavantageService implements StockQuotesService {
     Map<LocalDate, AlphavantageCandle> mapafterSort = new TreeMap<>(mapbeforeSort);
 
     List<AlphavantageCandle> alphavantageCandlesList = new ArrayList<AlphavantageCandle>();
-    for(Map.Entry<LocalDate, AlphavantageCandle> entry : mapafterSort.entrySet()){
+    for(Map.Entry<LocalDate, AlphavantageCandle> entry : mapafterSort.entrySet()) {
         if((entry.getKey()).compareTo(from) >=0 && (entry.getKey()).compareTo(to) <= 0) {
           AlphavantageCandle temp = entry.getValue();
           temp.setDate(entry.getKey());
@@ -88,15 +88,15 @@ public class AlphavantageService implements StockQuotesService {
 
     AlphavantageCandle[] list2 = new AlphavantageCandle[alphavantageCandlesList.size()];
 
-    for(int i=0;i<alphavantageCandlesList.size();i++){
-      list2[i]=alphavantageCandlesList.get(i);
+    for (int i = 0;i < alphavantageCandlesList.size();i++) {
+      list2[i] = alphavantageCandlesList.get(i);
     }
 
     // return aalphavantageCandlesList;
     return Arrays.asList(list2);
   }
 
-    //CHECKSTYLE:ON
+  //CHECKSTYLE:ON
   // TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
   //  1. Write a method to create appropriate url to call Alphavantage service. The method should
   //     be using configurations provided in the {@link @application.properties}.

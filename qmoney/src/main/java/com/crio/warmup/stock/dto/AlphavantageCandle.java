@@ -1,11 +1,10 @@
 package com.crio.warmup.stock.dto;
 
-import java.sql.Date;
 // import java.sql.Date;
-import java.time.LocalDate;
-
+// import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 
 // TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
 //  Implement the Candle interface in such a way that it matches the parameters returned

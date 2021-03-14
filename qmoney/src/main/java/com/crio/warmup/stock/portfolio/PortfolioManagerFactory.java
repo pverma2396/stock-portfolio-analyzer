@@ -36,11 +36,11 @@ public class PortfolioManagerFactory {
    public static PortfolioManager getPortfolioManager(String provider,
      RestTemplate restTemplate) {
       
-      StockQuoteServiceFactory s = StockQuoteServiceFactory.INSTANCE;
+      StockQuotesService s = StockQuoteServiceFactory.INSTANCE.getService(provider, restTemplate);
 
-      StockQuotesService p = s.getService(provider, restTemplate);
+      // StockQuotesService p = s.getService(provider, restTemplate);
 
-      return new PortfolioManagerImpl(p);
+      return new PortfolioManagerImpl(s);
    }
 
 }

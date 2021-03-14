@@ -37,11 +37,11 @@ public class TiingoService implements StockQuotesService {
           throw new RuntimeException();
         }
     
-        String uri = buildUri(symbol, from, to);
-        String str = restTemplate.getForObject(uri, String.class);
-        ObjectMapper objectMapper = getObjectMapper();
-        TiingoCandle[] candleList = objectMapper.readValue(str, TiingoCandle[].class);
-        //TiingoCandle[] candleList = restTemplate.getForObject(uri, TiingoCandle[].class);
+    String uri = buildUri(symbol, from, to);
+    String str = restTemplate.getForObject(uri, String.class);
+    ObjectMapper objectMapper = getObjectMapper();
+    TiingoCandle[] candleList = objectMapper.readValue(str, TiingoCandle[].class);
+    //TiingoCandle[] candleList = restTemplate.getForObject(uri, TiingoCandle[].class);
     
         if (candleList == null) {
           return new ArrayList<Candle>();
