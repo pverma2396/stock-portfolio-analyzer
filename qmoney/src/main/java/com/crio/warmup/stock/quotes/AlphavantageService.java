@@ -65,6 +65,8 @@ public class AlphavantageService implements StockQuotesService {
 
     String str = restTemplate.getForObject(uri, String.class);
 
+    System.out.println(str);
+
     if (str == null) {
       return new ArrayList<Candle>();
     }

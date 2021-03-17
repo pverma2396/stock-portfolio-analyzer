@@ -171,6 +171,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
     // String uriTemplate = "https://api.tiingo.com/tiingo/daily/" + symbol 
     // + "/prices?startDate=" + startDate.toString() + "&endDate=" + endDate.toString() 
     // + "&token=" + "d431f671467bfe6b952b908e6eea0397bfa1f560";
+    // String uriTemplate = "https://api.tiingo.com/tiingo/daily/" + symbol + "/prices?startDate=" + startDate.toString() + "&endDate=" + endDate.toString() + "&token=" + "d431f671467bfe6b952b908e6eea0397bfa1f560";
     return uriTemplate;
   }
 
