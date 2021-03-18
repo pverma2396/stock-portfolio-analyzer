@@ -3,6 +3,7 @@ package com.crio.warmup.stock.quotes;
 
 import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.TiingoCandle;
+import com.crio.warmup.stock.exception.StockQuoteServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -32,18 +33,24 @@ public class TiingoService implements StockQuotesService {
 
 
   public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to)
-      throws JsonProcessingException {
+      throws JsonProcessingException, StockQuoteServiceException {
         if (from.compareTo(to) >= 0) {
           throw new RuntimeException();
         }
     
     String uri = buildUri(symbol, from, to);
     String str = restTemplate.getForObject(uri, String.class);
+    
+    if(str == null){
+      throw new StockQuoteServiceException("Invalid response");
+    }
+
     ObjectMapper objectMapper = getObjectMapper();
     TiingoCandle[] candleList = objectMapper.readValue(str, TiingoCandle[].class);
     //TiingoCandle[] candleList = restTemplate.getForObject(uri, TiingoCandle[].class);
     
         if (candleList == null) {
+          //throw new StockQuoteServiceException("invalid response");
           return new ArrayList<Candle>();
         }
         List<Candle> stockList = Arrays.asList(candleList);
@@ -69,5 +76,20 @@ public class TiingoService implements StockQuotesService {
               + "&token=" + "d431f671467bfe6b952b908e6eea0397bfa1f560";
     return uriTemplate;
   }
+
+
+
+
+  // TODO: CRIO_TASK_MODULE_EXCEPTIONS
+  //  1. Update the method signature to match the signature change in the interface.
+  //     Start throwing new StockQuoteServiceException when you get some invalid response from
+  //     Tiingo, or if Tiingo returns empty results for whatever reason, or you encounter
+  //     a runtime exception during Json parsing.
+  //  2. Make sure that the exception propagates all the way from
+  //     PortfolioManager#calculateAnnualisedReturns so that the external user's of our API
+  //     are able to explicitly handle this exception upfront.
+
+  //CHECKSTYLE:OFF
+
 
 }

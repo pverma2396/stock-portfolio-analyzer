@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 // import java.util.stream.Collectors;
+
+import com.crio.warmup.stock.exception.StockQuoteServiceException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
 public class AlphavantageService implements StockQuotesService {
@@ -53,7 +58,8 @@ public class AlphavantageService implements StockQuotesService {
 
 
   @Override
-  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to) throws JsonProcessingException {
+  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to) 
+      throws JsonProcessingException, StockQuoteServiceException {
     // TODO Auto-generated method stub
     if (from.compareTo(to) >= 0) {
       throw new RuntimeException();
@@ -68,7 +74,8 @@ public class AlphavantageService implements StockQuotesService {
     System.out.println(str);
 
     if (str == null) {
-      return new ArrayList<Candle>();
+      throw new StockQuoteServiceException("Invalid Response");
+      //return new ArrayList<Candle>();
     }
 
     AlphavantageDailyResponse alphavantageDailyResponse = new AlphavantageDailyResponse();
@@ -117,6 +124,14 @@ public class AlphavantageService implements StockQuotesService {
               + "&apikey=NLHNSS4BR6TWYQS6";
     return uriTemplate;
   }
+
+  // TODO: CRIO_TASK_MODULE_EXCEPTIONS
+  //   1. Update the method signature to match the signature change in the interface.
+  //   2. Start throwing new StockQuoteServiceException when you get some invalid response from
+  //      Alphavantage, or you encounter a runtime exception during Json parsing.
+  //   3. Make sure that the exception propagates all the way from PortfolioManager, so that the
+  //      external user's of our API are able to explicitly handle this exception upfront.
+  //CHECKSTYLE:OFF
 
 }
 

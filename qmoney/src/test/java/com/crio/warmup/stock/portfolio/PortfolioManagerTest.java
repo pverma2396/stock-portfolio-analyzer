@@ -83,7 +83,7 @@ class PortfolioManagerTest {
   public void calculateExtrapolatedAnnualizedReturn()
       throws Exception {
     //given
-    String moduleToRun = "REFACTOR";
+    String moduleToRun = null;
 
 
     if (moduleToRun.equals("REFACTOR")) {
@@ -99,8 +99,6 @@ class PortfolioManagerTest {
     PortfolioTrade trade3 = new PortfolioTrade("MSFT", 20, LocalDate.parse("2019-01-02"));
     List<PortfolioTrade> portfolioTrades = Arrays
         .asList(new PortfolioTrade[]{trade1, trade2, trade3});
-
-    // moduleToRun = "ADDITIONAL_REFACTOR";
 
     if (moduleToRun.equals("ADDITIONAL_REFACTOR")) {
       portfolioManager = new PortfolioManagerImpl(stockQuotesService);
