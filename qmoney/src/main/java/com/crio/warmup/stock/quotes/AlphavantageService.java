@@ -82,6 +82,11 @@ public class AlphavantageService implements StockQuotesService {
     
     alphavantageDailyResponse = objectMapper.readValue(str, AlphavantageDailyResponse.class);
 
+    if (alphavantageDailyResponse.getCandles() == null) {
+      throw new StockQuoteServiceException("Invalid Response");
+      //return new ArrayList<Candle>();
+    }
+
     Map<LocalDate, AlphavantageCandle> mapbeforeSort = alphavantageDailyResponse.getCandles();
 
     Map<LocalDate, AlphavantageCandle> mapafterSort = new TreeMap<>(mapbeforeSort);
