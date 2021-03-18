@@ -23,9 +23,9 @@ import java.util.TreeMap;
 // import java.util.stream.Collectors;
 
 import com.crio.warmup.stock.exception.StockQuoteServiceException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.util.stream.Collectors;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import java.time.LocalDate;
+// import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
 public class AlphavantageService implements StockQuotesService {

@@ -1,8 +1,8 @@
 
 package com.crio.warmup.stock.portfolio;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.SECONDS;
+// import static java.time.temporal.ChronoUnit.DAYS;
+// import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
@@ -27,12 +27,12 @@ import java.util.List;
 // import java.util.concurrent.Future;
 // import java.util.concurrent.TimeUnit;
 // import java.util.stream.Collectors;
-import com.crio.warmup.stock.dto.TiingoCandle;
+// import com.crio.warmup.stock.dto.TiingoCandle;
 import com.crio.warmup.stock.exception.StockQuoteServiceException;
-import com.crio.warmup.stock.quotes.StockQuotesService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+// import com.crio.warmup.stock.quotes.StockQuotesService;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerImpl implements PortfolioManager {
