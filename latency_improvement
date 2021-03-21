@@ -1,0 +1,10 @@
+Tiingo curl command module 8
+real    0m1.004s
+
+Time taken by the app
+real    0m5.956s
+
+Time taken after optimization
+real    0m2.577s
+
+Difference = 3.379s
