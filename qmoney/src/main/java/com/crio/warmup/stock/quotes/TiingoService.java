@@ -34,34 +34,33 @@ public class TiingoService implements StockQuotesService {
 
   public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to)
       throws JsonProcessingException, StockQuoteServiceException {
-        if (from.compareTo(to) >= 0) {
-          throw new RuntimeException();
-        }
+    if (from.compareTo(to) >= 0) {
+      throw new RuntimeException();
+    }
     
     String uri = buildUri(symbol, from, to);
     String str = restTemplate.getForObject(uri, String.class);
     
-    if(str == null){
+    if (str == null) {
       throw new StockQuoteServiceException("Invalid response");
     }
 
     ObjectMapper objectMapper = getObjectMapper();
     TiingoCandle[] candleList = objectMapper.readValue(str, TiingoCandle[].class);
-    //TiingoCandle[] candleList = restTemplate.getForObject(uri, TiingoCandle[].class);
     
-        if (candleList == null) {
-          //throw new StockQuoteServiceException("invalid response");
-          return new ArrayList<Candle>();
-        }
-        List<Candle> stockList = Arrays.asList(candleList);
-        //return stockList;
+    if (candleList == null) {
+      //throw new StockQuoteServiceException("invalid response");
+      return new ArrayList<Candle>();
+    }
+    List<Candle> stockList = Arrays.asList(candleList);
+    //return stockList;
 
-      return stockList;
+    return stockList;
   }
 
   private static ObjectMapper getObjectMapper() {
-      ObjectMapper objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new JavaTimeModule());
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
     return objectMapper;
   }
 

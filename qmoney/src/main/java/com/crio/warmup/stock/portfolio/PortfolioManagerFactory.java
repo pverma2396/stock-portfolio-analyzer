@@ -15,7 +15,7 @@ public class PortfolioManagerFactory {
 
     return new PortfolioManagerImpl(restTemplate);
 
-  // public static PortfolioManager getPortfolioManager(RestTemplate restTemplate) {
+    // public static PortfolioManager getPortfolioManager(RestTemplate restTemplate) {
 
   }
 
@@ -33,14 +33,14 @@ public class PortfolioManagerFactory {
   //       ./gradlew test --tests PortfolioManagerFactory
 
 
-   public static PortfolioManager getPortfolioManager(String provider,
-     RestTemplate restTemplate) {
+  public static PortfolioManager getPortfolioManager(String provider,
+       RestTemplate restTemplate) {
       
-      StockQuotesService s = StockQuoteServiceFactory.INSTANCE.getService(provider, restTemplate);
+    StockQuotesService s = StockQuoteServiceFactory.INSTANCE.getService(provider, restTemplate);
 
-      // StockQuotesService p = s.getService(provider, restTemplate);
+    // StockQuotesService p = s.getService(provider, restTemplate);
 
-      return new PortfolioManagerImpl(s);
-   }
+    return new PortfolioManagerImpl(s);
+  }
 
 }

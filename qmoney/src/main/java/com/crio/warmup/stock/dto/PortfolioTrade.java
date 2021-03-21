@@ -2,6 +2,7 @@
 package com.crio.warmup.stock.dto;
 
 import java.time.LocalDate;
+import java.util.concurrent.Callable;
 
 public class PortfolioTrade {
 
