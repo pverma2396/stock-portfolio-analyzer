@@ -156,9 +156,9 @@ class PortfolioManagerPerformanceTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    // if (throwException) {
-    //   throw new RuntimeException("Failed to get data from service provider");
-    // }
+    if (throwException) {
+      throw new RuntimeException("Failed to get data from service provider");
+    }
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     return Arrays.asList(mapper.readValue(responseText, TiingoCandle[].class));

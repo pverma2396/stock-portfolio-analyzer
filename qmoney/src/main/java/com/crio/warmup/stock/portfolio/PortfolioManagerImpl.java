@@ -91,10 +91,14 @@ public class PortfolioManagerImpl implements PortfolioManager {
     List<Future<AnnualizedReturn>> result = executor.invokeAll(callableTasks);
     //annualizedReturnslist2 = Future.get(annualizedReturnslist);
     for (Future<AnnualizedReturn> f: result) {
-      try {
-        annualizedReturnslist2.add(f.get());
-      } catch (ExecutionException e) {
-        e.printStackTrace();
+      if (f.isDone()) {
+        try {
+          annualizedReturnslist2.add(f.get());
+        } catch (ExecutionException e) {
+          throw new StockQuoteServiceException("invalid");
+        }
+      } else {
+        throw new StockQuoteServiceException("invalid");
       }
     }
 
@@ -102,11 +106,13 @@ public class PortfolioManagerImpl implements PortfolioManager {
     Collections.sort(annualizedReturnslist2, comparator);
 
     return annualizedReturnslist2;
+
+
   }
 
   @Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
-       LocalDate endDate) {
+       LocalDate endDate) throws StockQuoteServiceException {
 
     AnnualizedReturn annualizedReturn;
     List<AnnualizedReturn> annualizedReturnslist = new ArrayList<AnnualizedReturn>();
@@ -127,7 +133,8 @@ public class PortfolioManagerImpl implements PortfolioManager {
   }
 
 
-  public AnnualizedReturn getAnnualizedReturn(PortfolioTrade trade, LocalDate endDate) {
+  public AnnualizedReturn getAnnualizedReturn(PortfolioTrade trade, LocalDate endDate)
+      throws StockQuoteServiceException {
     AnnualizedReturn annualizedReturn;
     String symbol = trade.getSymbol();
     LocalDate startDate = trade.getPurchaseDate();
@@ -169,13 +176,13 @@ public class PortfolioManagerImpl implements PortfolioManager {
 
 
   public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to)
-      throws JsonProcessingException {
+      throws JsonProcessingException, StockQuoteServiceException {
       
-    try {
-      return stockQuotesService.getStockQuote(symbol, from, to);
-    } catch (StockQuoteServiceException e) {
-      System.out.println(e.getMessage());
-    }
+    // try {
+    return stockQuotesService.getStockQuote(symbol, from, to);
+    // } catch (StockQuoteServiceException e) {
+    //   System.out.println(e.getMessage());
+    // }
       
     // if (from.compareTo(to) >= 0) {
     //   throw new RuntimeException();
@@ -193,7 +200,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
     
 
     // return stockList;
-    return Collections.emptyList();
+    //return Collections.emptyList();
   }
 
 

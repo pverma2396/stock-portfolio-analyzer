@@ -1,6 +1,8 @@
 
 package com.crio.warmup.stock.quotes;
 
+import com.crio.warmup.stock.exception.StockQuoteServiceException;
+
 import org.springframework.web.client.RestTemplate;
 
 public enum StockQuoteServiceFactory {
